@@ -20,13 +20,13 @@ data$Q47 <- factor(data$q47,
 # https://www.r-bloggers.com/social-science-goes-r-weighted-survey-data/
 
 # First examine the proportions in the raw data
-prop.table(table(data$Q47))
+prop.table(table(data$q47))
 
 # Now create a survey design object and use the weights provided
-sdesign <- svydesign(ids = ~1, data = data, weights = data$WEIGHT)
+sdesign <- svydesign(ids = ~1, data = data, weights = data$weight)
 
 # Now look at the proportions in the weighted version. These match those shown on the Roper Center website
-tbl <- prop.table(svytable(~data$Q47, design = sdesign))
+tbl <- prop.table(svytable(~data$q47, design = sdesign))
 
 # Render table in Latex amd save the file
 tbl_ltx <- xtable(tbl, caption = q_text)
