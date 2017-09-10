@@ -2,24 +2,19 @@ setwd("/Users/Tom/Roper-iPoll/")
 library(readr)
 library(haven)
 library(survey)
-library(Hmisc)
 library(xtable)
 
 f <- "rr201404.dat"
-f2 <- "rr201404.por"
 
-# TODO: Figure out how to read in the .dat file
-#data <- read_delim(f, delim = ' ')
+m <- "metadata.csv"
+meta <- read_csv(m)
 
-data <- read_spss(f2)
+data <- read.fwf(f, widths = meta$widths, col.names = meta$variable)
 
 q_text <- "As you may know, Bitcoin is a new online digital currency that is not connected to any particular country's currency system and is not controlled by any government. Do you think the government should allow people to use Bitcoins to purchase goods and services, or not?"
-# Labelling the variable of interest
-label(data$Q47) <-  q_text
 
 # Labelling the labels of the column
-# Note that labels already exist in SPSS  version
-data$Q47 <- factor(data$Q47,
+data$Q47 <- factor(data$q47,
                   levels = c(1,2,8,9),
                   labels = c("Favor", "Oppose", "Don't know", "Refused")) 
 
