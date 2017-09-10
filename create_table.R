@@ -1,6 +1,4 @@
 setwd("/Users/Tom/Roper-iPoll/")
-library(readr)
-library(haven)
 library(survey)
 library(xtable)
 
@@ -37,5 +35,3 @@ print.xtable(tbl_ltx, type="latex", file="table.tex")
 
 # Finally, call pandoc to render it to pdf and open it in pdf reader:
 system("pandoc -s table.tex -o table.pdf && open table.pdf")
-
-
