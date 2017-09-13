@@ -1,18 +1,25 @@
 setwd("/Users/Tom/Roper-iPoll/")
 library(survey)
 library(xtable)
+library(readr)
+library(Hmisc)
+
 
 f <- "rr201404.dat"
-m <- "metadata.csv" # data copied from poll methodology p. 9-10. A new column with widths was manually added using Excel by 
+m <- "metadata.csv" # metadata copied from poll methodology p. 9-10. 
+# A new column with widths was manually added using Excel by 
 # subtracting the end value of row m from each row m+1
 
 meta <- read_csv(m)
 data <- read.fwf(f, widths = meta$widths, col.names = meta$variable)
 
-q_text <- "As you may know, Bitcoin is a new online digital currency that is not connected to any particular country's currency system and is not controlled by any government. Do you think the government should allow people to use Bitcoins to purchase goods and services, or not?"
+q_text <- "As you may know, Bitcoin is a new online digital currency that 
+is not connected to any particular country's currency system and is not 
+controlled by any government. Do you think the government should allow people 
+to use Bitcoins to purchase goods and services, or not?"
 
 # Adding labels to the column
-data$Q47 <- factor(data$q47,
+data$q47 <- factor(data$q47,
                   levels = c(1,2,8,9),
                   labels = c("Favor", "Oppose", "Don't know", "Refused")) 
 
@@ -25,10 +32,11 @@ prop.table(table(data$q47))
 # Now create a survey design object and use the weights provided
 sdesign <- svydesign(ids = ~1, data = data, weights = data$weight)
 
-# Now look at the proportions in the weighted version. These match those shown on the Roper Center website
+# Now look at the proportions in the weighted version. 
+# These match those shown on the Roper Center website
 tbl <- prop.table(svytable(~data$q47, design = sdesign))
 
-# Render table in Latex amd save the file
+# Render table in Latex and save the file
 tbl_ltx <- xtable(tbl, caption = q_text)
 names(tbl_ltx) <- c("% of Respondents")
 print.xtable(tbl_ltx, type="latex", file="table.tex")
